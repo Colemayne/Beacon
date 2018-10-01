@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+* {
+    box-sizing: border-box;
+   transition: 0.75s cubic-bezier(0.4, -0.4, 0.35, 1.2);
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+.background{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: #f9fffc;
+}
+.leftBar{
+  position: fixed;
+  height: 100%;
+  width: 20%;
+  left: 0;
+  top: 0;
+  background: #f9fffc;
+  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.14);
+}
+.mainContent{
+  position: absolute;
+  height: 75%;
+  width: 70%;
+  top: 50%;
+  left: 60%;
+  background: rgba(255,255,255,0.04);
+  border: 8px solid rgba(0,0,0,0.15);
+  transform: translate(-50%, -50%);
+}
+.mainContent-left{
+  position: absolute;
+  height: 95%;
+  width: 48%;
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+}
+.mainContent-right{
+  position: absolute;
+  height: 95%;
+  width: 48%;
+  top: 50%;
+  right: 25%;
+  transform: translate(50%,-50%);
+}
+.table{
+  position: absolute;
+  height: 90%;
+  width: 85%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+table, th, td {
+    border: 2px solid rgba(0,0,0,0.7);
+    border-collapse: collapse;
+    color: rgba(0,0,0,1);
+}
+table{
+  position: relative;
+  top: 6%;
+  left: -1%;
+  background: linear-gradient(35deg, rgba(172, 224, 159,0.2), rgba(159, 224, 193,0.35));
+  width: 102%;
+}
+th, td {
+    padding: 5px;
+}
+th {
+    text-align: left;
+}
+.formBox{
+  position: absolute;
+  height: 90%;
+  width: 85%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 25px;
+}
+.textBox1 {
+  height: 35px;
+  padding: 10px;
+  border: 2px solid rgba(0,0,0,0.15);
+  border-collapse: collapse;
+  background: #dddddd;
+  margin: 5px;
+  border-radius: 6px;
+}
+.textBox1:focus {
+  border: 2px solid #1f7ead;
+  outline: none;
+}
+.submit1 {
+  border: 2px solid rgba(255,255,255,0.00);
+  height: 35px;
+  width: 150px;
+  padding: 10px;
+  border-collapse: collapse;
+  background: #dddddd;
+  margin: 5px;
+  border-radius: 6px;
+  outline: none;
+}
+.submit1:focus {
+  border: 2px solid #1f7ead;
+}
+hr {
+  position: relative;
+  background: black;
+  height: 3px;
+  color: black;
+}

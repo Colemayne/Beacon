@@ -14,10 +14,29 @@ import java.util.ArrayList;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class HookController {
+    Gson gson = new Gson();
+    DatabaseController DBC = new DatabaseController();
 
-    @RequestMapping("/Hello")
-    public String sayHi(){
-        return "Hello!";
+
+    @RequestMapping(value = "/AddUser", method = RequestMethod.POST)
+    public void processUser(@RequestBody String jsonString) throws Exception {
+
+        /*User user = gson.fromJson(jsonString, User.class);
+        System.out.println(user.getEmpID());
+        System.out.println(user.getFirstName());
+        System.out.println(user.getLastName());
+        System.out.println(user.getPhoneNumber());
+        DBC.addUser(user.getEmpID(),user.getFirstName(),user.getLastName(),user.getPhoneNumber()); */
     }
+    @RequestMapping("/TestIt")
+    public String returnAll(){
+        
+        DBC.addUser("1001","Coleman","Beiler","7034398816"); 
+
+        return "Done";
+
+    }
+
+    
 
 }
