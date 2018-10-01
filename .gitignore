@@ -1,3 +1,13 @@
+bin/
 build/
 API/build
 WebServer/build
+.classpath
+.project
+.settings/
+API/.classpath
+API/.project
+API/.settings/
+API/bin/
+API/.gradle
+WebServer/.gradle
