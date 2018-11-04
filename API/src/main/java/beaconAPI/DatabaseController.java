@@ -49,5 +49,54 @@ public class DatabaseController {
             }
         }
     }
+    public static ArrayList selectAllUsers() {
+        Connection conn = null;
+        Statement stmt = null;
+        ArrayList<User> users = new ArrayList<User>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT EMPID, FirstName, LastName, PhoneNumber FROM USERS;";
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            while (rs.next()) {
+                User user = new User();
+                user.setEmpID(rs.getString("EMPID"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                users.add(user);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+    
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+    
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+    
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+    
+        }
+        return users;
+    }
+
 
 }

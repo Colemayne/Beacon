@@ -29,13 +29,22 @@ public class HookController {
         DBC.addUser(user.getEmpID(),user.getFirstName(),user.getLastName(),user.getPhoneNumber()); */
     }
     @RequestMapping("/TestIt")
-    public String returnAll(){
+    public String returnAll2(){
         
         DBC.addUser("1001","Coleman","Beiler","7034398816"); 
 
         return "Done";
 
     }
+    @RequestMapping("/selectAll")
+    public String returnAll(){
+        ArrayList users = DBC.selectAllUsers();
+        String json = gson.toJson(users);
+
+        return json;
+
+    }
+
 
     
 
