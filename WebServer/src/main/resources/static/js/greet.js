@@ -17,6 +17,8 @@ var p7 = new Person("xx0007", "Harrison", "Schwab", "703xxxxxx");
 
 var People = [p1, p2, p3, p4, p5, p6, p7];
 
+
+
 window.onload = function() {
   addPeople(People);
 }

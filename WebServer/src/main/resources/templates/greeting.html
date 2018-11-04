@@ -20,13 +20,20 @@
             <input type="textBox" class="textBox1" placeholder="First Name" /><br>
             <input type="textBox" class="textBox1" placeholder="Last Name"/>
             <input type="textBox" class="textBox1" placeholder="Phone #"/><br>
-            <input type="submit" class="submit1"/>
           </form>
+          <button type="button" onclick="doIT()">Send it</button>
+          <script>
+          function doIT() {
+          	var xhttp = new XMLHttpRequest();
+          	xhttp.open("POST", "http://localhost:8081/TestIt", true);
+          	xhttp.send();
+          }
+          </script>
           <hr>
           <form>
             <h1>Del User:</h1>
             <input type="textBox" class="textBox1" placeholder="Employee ID"/>
-            <input type="submit" class="submit1"/>
+            <input type="submit" class="submit2"/>
           </form>
         </div>
       </div>
