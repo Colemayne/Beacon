@@ -5,6 +5,7 @@ WebServer/build
 .classpath
 .project
 .settings/
+.gradle/
 API/.classpath
 API/.project
 API/.settings/
