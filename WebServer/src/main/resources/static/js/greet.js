@@ -1,3 +1,9 @@
+
+
+var request = grabData();
+
+var People = [];
+
 let Person = class {
   constructor(empID, fname, lname, phone) {
     this.empID = empID;
@@ -7,25 +13,59 @@ let Person = class {
   }
 };
 
-var p1 = new Person("xx0001", "Coleman", "Beiler", "703xxxxxx");
-var p2 = new Person("xx0002", "Aamna", "Chaudry", "703xxxxxx");
-var p3 = new Person("xx0003", "Nathan", "Hwang", "703xxxxxx");
-var p4 = new Person("xx0004", "Ken", "Lee", "703xxxxxx");
-var p5 = new Person("xx0005", "Ziba ", "Movahedpour", "703xxxxxx");
-var p6 = new Person("xx0006", "Andy", "Nguyen", "703xxxxxx");
-var p7 = new Person("xx0007", "Harrison", "Schwab", "703xxxxxx");
-
-var People = [p1, p2, p3, p4, p5, p6, p7];
-
-
-
 window.onload = function() {
-  addPeople(People);
+  
+
+  request.onload = function() { 
+    var people = request.response;
+    addPeople(people);
+  }
+
+  document.getElementById('AddBtn').onclick = function() {
+    doIT();
+    //location.reload();
+  }
+
+}
+
+function refactorTable() {
+    var refactor = grabData();
+    var people = refactor.response;
+    addPeople(people);
+}
+
+function grabData() {
+  var requestURL = 'http://127.0.0.1:8081/selectAll';
+  var request = new XMLHttpRequest();
+  request.open('GET', requestURL);
+  request.responseType = 'json';
+  request.send();
+  return request;
+}
+
+function doIT() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", "http://localhost:8081/TestIt", true);
+  xhttp.send();
 }
 
 
 function addPeople(arr) {
+
+  var peopleList = arr;
+  for (var i = 0; i < peopleList.length; i++){
+    var p = new Person(peopleList[i].empId, peopleList[i].firstName, peopleList[i].lastName, peopleList[i].phoneNumber);
+    People.push(p);
+  }
+  populatePage(People);
+}
+
+function populatePage(arr) {
   var table = document.querySelector("table");
+
+  while (table.firstChild) {
+    table.removeChild(table.firstChild);
+  }
 
   for (i = 0; i < arr.length; i++) {
     var row = document.createElement("tr");

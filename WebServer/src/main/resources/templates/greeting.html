@@ -21,14 +21,7 @@
             <input type="textBox" class="textBox1" placeholder="Last Name"/>
             <input type="textBox" class="textBox1" placeholder="Phone #"/><br>
           </form>
-          <button type="button" onclick="doIT()">Send it</button>
-          <script>
-          function doIT() {
-          	var xhttp = new XMLHttpRequest();
-          	xhttp.open("POST", "http://localhost:8081/TestIt", true);
-          	xhttp.send();
-          }
-          </script>
+          <button type="button" id="AddBtn">Send it</button>
           <hr>
           <form>
             <h1>Del User:</h1>
