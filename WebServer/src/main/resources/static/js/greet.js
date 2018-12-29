@@ -23,9 +23,15 @@ window.onload = function() {
 
   document.getElementById('AddBtn').onclick = function() {
     doIT();
-    location.reload();
+    //location.reload();
   }
 
+}
+
+function refactorTable() {
+    var refactor = grabData();
+    var people = refactor.response;
+    addPeople(people);
 }
 
 function grabData() {
@@ -56,6 +62,10 @@ function addPeople(arr) {
 
 function populatePage(arr) {
   var table = document.querySelector("table");
+
+  while (table.firstChild) {
+    table.removeChild(table.firstChild);
+  }
 
   for (i = 0; i < arr.length; i++) {
     var row = document.createElement("tr");
