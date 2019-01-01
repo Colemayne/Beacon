@@ -22,8 +22,13 @@ window.onload = function() {
   }
 
   document.getElementById('AddBtn').onclick = function() {
-    doIT();
-    //location.reload();
+    sendNewUser();
+    location.reload();
+  }
+
+  document.getElementById('DelBtn').onclick = function() {
+    deleteUser();
+    location.reload();
   }
 
 }
@@ -43,12 +48,24 @@ function grabData() {
   return request;
 }
 
-function doIT() {
+function sendNewUser() {
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "http://localhost:8081/TestIt", true);
-  xhttp.send();
+  var idValue = document.getElementById('idbox').value;
+  var fnValue = document.getElementById('fnbox').value;
+  var lnValue = document.getElementById('lnbox').value;
+  var phValue = document.getElementById('phbox').value;
+  var params = '{"empId":"'+idValue+'","firstName":"'+fnValue+'","lastName":"'+lnValue+'","phoneNumber":"'+phValue+'"}';
+  xhttp.open("POST", "http://localhost:8081/addUser", true);
+  xhttp.send(params);
 }
 
+function deleteUser() {
+  var xhttp = new XMLHttpRequest();
+  var delValue = document.getElementById('delbox').value;
+  var params = '{"empId":"'+delValue+'"}';
+  xhttp.open("POST", "http://localhost:8081/delUser", true);
+  xhttp.send(params);
+}
 
 function addPeople(arr) {
 
