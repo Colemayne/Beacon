@@ -8,16 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class GreetingController {
 
-    @GetMapping("/greeting")
+    @GetMapping("/")
     public String greeting(){
 
-        return "greeting";
-    }
-    @GetMapping("/js")
-    public String js(){
-
-        return "greet";
-
+        return "index";
     }
 
 }
