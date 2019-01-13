@@ -10,12 +10,16 @@ public interface ApplicationConstants {
 	
 	public static final String PASS = "BeaconApp";
 	
-	public static final String EMPLOYEE_ID_ROW = "EMPID";
+	public static final String EMPLOYEE_ID_ROW = "employee_id";
 	
-	public static final String FIRST_NAME_ROW = "FirstName";
+	public static final String FIRST_NAME_ROW = "first_name";
 	
-	public static final String LAST_NAME_ROW = "LastName";
+	public static final String LAST_NAME_ROW = "last_name";
 	
-	public static final String PHONE_NUMBER_ROW = "PhoneNumber";
+	public static final String PHONE_NUMBER_ROW = "phone_number";
+	
+	public static final String DEPARTMENT_ROW = "department";
+	
+	public static final String MANAGER_ID_ROW = "manager_id";
 	
 }

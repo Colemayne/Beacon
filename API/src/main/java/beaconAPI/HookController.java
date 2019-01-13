@@ -36,7 +36,7 @@ public class HookController {
     public void addUser(@RequestBody String jsonString) throws Exception {
 
         User user = gson.fromJson(jsonString, User.class);
-        DBC.addUser(user.getEmpID(),user.getFirstName(),user.getLastName(),user.getPhoneNumber());
+        DBC.addUser(user.getEmployeeId(),user.getFirstName(),user.getLastName(),user.getPhoneNumber(),user.getDepartment(),user.getManagerId());
     }
     
     /* This function is responsible for sending the received string to the DatabaseController.
@@ -48,8 +48,8 @@ public class HookController {
     public void delUser(@RequestBody String jsonString) throws Exception {
 
         User user = gson.fromJson(jsonString, User.class);
-        System.out.println(user.getEmpID());
-        DBC.delUser(user.getEmpID());
+        System.out.println(user.getEmployeeId());
+        DBC.delUser(user.getEmployeeId());
     }
     
     /* This function is responsible for returning the ArrayList from the DatabaseController in json format.
