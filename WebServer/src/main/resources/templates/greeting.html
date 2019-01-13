@@ -8,40 +8,40 @@
     </head>
   <body>
     <div class="background"></div>
-    <div class="leftBar">
+    
+    <div class="popupBackground" id="popupBG">
+    <div class="popupAddMain" id="popupAdd">
+      <div class="addX" id="addx"></div>
+      <div class="popupMain_header">
+         
+      </div>
+      <form class="popupForm">
+           <input type="text" class="popupTextbox" id="fnbox" placeholder="First Name:">
+           <input type="text" class="popupTextbox" id="lnbox" placeholder="Last Name:">
+           <input type="text" class="popupTextbox" id="idbox" placeholder="Employee Number:">
+           <input type="text" class="popupTextbox" id="phbox" placeholder="Phone Number:">
+           <input type="text" class="popupTextbox" id="mnbox" placeholder="Manager:">
+           <input type="text" class="popupTextbox" id="dpbox" placeholder="Department:">
+           
+        </form>
+      <button type="button" id="submitAdd" class="submitButton">Add User</button>
+    </div>
+    </div>
+
+    <div class="leftMenu"></div>
+    
+    <div class="topMenu">
+      <div class="addButton" id="addbtn"></div>
+    </div>
+    
+    <div class="contentPane">
+      
+      <div class="userTablePane">
+        <header></header>
+      </div>
       
     </div>
-    <div class="mainContent">
-      <div class="mainContent-left">
-        <div class="formBox">
-          <form>
-            <h1>Add User:</h1>
-            <input type="textBox" class="textBox1" placeholder="Employee ID" id="idbox"/>
-            <input type="textBox" class="textBox1" placeholder="First Name" id="fnbox"/><br>
-            <input type="textBox" class="textBox1" placeholder="Last Name" id="lnbox"/>
-            <input type="textBox" class="textBox1" placeholder="Phone #" id="phbox"/><br>
-          </form>
-          <button type="button" id="AddBtn">Send it</button>
-          <hr>
-          <form>
-            <h1>Del User:</h1>
-            <input type="textBox" class="textBox1" placeholder="Employee ID" id="delbox"/>
-          </form>
-          <button type="button" id="DelBtn">Delete it</button>
-        </div>
-      </div>
-      <div class="mainContent-right">
-        <div class="table">
-          <table>
-          <tr>
-            <th>Employee ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone #</th>
-          </tr>
-          </table>
-        </div>
-      </div>
-    </div> 
+
+    
   </body>
 </html>

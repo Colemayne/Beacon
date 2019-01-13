@@ -23,7 +23,7 @@ import beaconAPI.ApplicationConstants;
      * Expected Behavior: Use provided arguments to create a string and use that to create a statement which is sent to mysql.
      * Error Handling: SQLException, Exception
      */
-    public void addUser(String empId, String firstName, String lastName, String phoneNumber) {
+    public void addUser(String empId, String firstName, String lastName, String phoneNumber, String department, String managerId) {
     	
         Connection conn = null;
         Statement stmt = null;
@@ -40,8 +40,10 @@ import beaconAPI.ApplicationConstants;
                     + ApplicationConstants.EMPLOYEE_ID_ROW + ","
                     + ApplicationConstants.FIRST_NAME_ROW + ","
                     + ApplicationConstants.LAST_NAME_ROW + ","
-                    + ApplicationConstants.PHONE_NUMBER_ROW + ") "
-            		+ "VALUES(\'"+empId+"\',\'"+firstName+"\',\'"+lastName+"\',\'"+phoneNumber+"\');";
+                    + ApplicationConstants.PHONE_NUMBER_ROW + ","
+                    + ApplicationConstants.DEPARTMENT_ROW + ","
+                    + ApplicationConstants.MANAGER_ID_ROW + ") "
+            		+ "VALUES(\'"+empId+"\',\'"+firstName+"\',\'"+lastName+"\',\'"+phoneNumber+"\',\'"+department+"\',\'"+managerId+"\');";
             
             System.out.println(sql);
             
@@ -141,17 +143,20 @@ import beaconAPI.ApplicationConstants;
             
             String sql;
             sql = "SELECT "+ApplicationConstants.EMPLOYEE_ID_ROW+","+ApplicationConstants.FIRST_NAME_ROW+
-            		","+ApplicationConstants.LAST_NAME_ROW+","+ApplicationConstants.PHONE_NUMBER_ROW+" FROM USERS;";
+            		","+ApplicationConstants.LAST_NAME_ROW+","+ApplicationConstants.PHONE_NUMBER_ROW+
+            		","+ApplicationConstants.DEPARTMENT_ROW+","+ApplicationConstants.MANAGER_ID_ROW+" FROM USERS;";
             
             ResultSet rs = stmt.executeQuery(sql);
     
             while (rs.next()) {
             	
                 User user = new User();
-                user.setEmpID(rs.getString(ApplicationConstants.EMPLOYEE_ID_ROW));
+                user.setEmployeeId(rs.getString(ApplicationConstants.EMPLOYEE_ID_ROW));
                 user.setFirstName(rs.getString(ApplicationConstants.FIRST_NAME_ROW));
                 user.setLastName(rs.getString(ApplicationConstants.LAST_NAME_ROW));
                 user.setPhoneNumber(rs.getString(ApplicationConstants.PHONE_NUMBER_ROW));
+                user.setDepartment(rs.getString(ApplicationConstants.DEPARTMENT_ROW));
+                user.setManagerId(rs.getString(ApplicationConstants.MANAGER_ID_ROW));
                 users.add(user);
             }
             rs.close();
