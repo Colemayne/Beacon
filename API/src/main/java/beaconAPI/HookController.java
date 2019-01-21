@@ -39,6 +39,7 @@ public class HookController {
         DBC.addUser(user.getEmployeeId(),user.getFirstName(),user.getLastName(),user.getPhoneNumber(),user.getDepartment(),user.getManagerId());
     }
     
+    
     /* This function is responsible for sending the received string to the DatabaseController.
      * Input: String.
      * Output: None.
@@ -59,6 +60,7 @@ public class HookController {
      */
     @RequestMapping("/selectAll")
     public String returnAll(){
+     
         ArrayList<User> users = DBC.selectAllUsers();
         String json = gson.toJson(users);
 
@@ -66,7 +68,62 @@ public class HookController {
 
     }
 
+    @RequestMapping("/selectNumUsers")
+    public String selectNumUsers(){
+    	
+        String numOfUsers = DBC.selectNum(0);
+        
+        return "{\"number_of_users\":"+numOfUsers+"}";
+
+    }
+
+    @RequestMapping("/selectNumAlerts")
+    public String selectNumAlerts(){
+
+        String numOfAlerts = DBC.selectNum(1);
+        
+        return "{\"number_of_alerts\":"+numOfAlerts+"}";
+
+    }
+
+    @RequestMapping("/selectAllAlerts")
+    public String returnAllAlerts(){
+
+    	ArrayList<Alert> alerts = DBC.selectAllAlerts();
+    	String json = gson.toJson(alerts);
+    	
+        return json;
+
+    }
+
+    @RequestMapping(value = "/selectSpecificAlert", method = RequestMethod.POST)
+    public String returnSpecificAlert(@RequestBody String jsonString) throws Exception{
+
+    	Alert alert = DBC.selectSpecificAlert(jsonString);
+    	String json = gson.toJson(alert);
+        return json;
+
+    }
+
+    @RequestMapping(value = "/addAlert", method = RequestMethod.POST)
+    public String addAlert(@RequestBody String jsonString) throws Exception{
+
+        return "Add Alert";
+
+    }
+
+    @RequestMapping(value = "/cancelAlert", method = RequestMethod.POST)
+    public String cancelAlert(@RequestBody String jsonString) throws Exception{
+
+        return "Cancel Alert";
+
+    }
 
     
 
 }
+
+
+
+
+

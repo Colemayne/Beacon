@@ -187,6 +187,176 @@ import beaconAPI.ApplicationConstants;
         }
         return users;
     } // End of selectAllUsers function.
+    
+    public String selectNum(int controlNum) {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        String numberOfUsers = new String();
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            String sql = new String();
+            
+            if (controlNum == 0) {
+                sql = "SELECT COUNT(*) FROM "+ApplicationConstants.USERS_TABLE+";";
+            } else if (controlNum == 1) {
+            	sql = "SELECT COUNT(*) FROM "+ApplicationConstants.ALERTS_TABLE+";";
+            }
+            
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            while (rs.next()) {
+            	numberOfUsers = rs.getString("count(*)");
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+    
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+    
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+    
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+    
+        }
+        return numberOfUsers;
+    } // End of selectNum function.
+    
+    public ArrayList<Alert> selectAllAlerts() {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        ArrayList<Alert> alerts = new ArrayList<Alert>();
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            String sql;
+            sql = "SELECT "+ApplicationConstants.ALERT_ID_ROW+","+ApplicationConstants.ALERT_TYPE_ROW+
+            		","+ApplicationConstants.ALERT_RECIPIENTS_ROW+","+ApplicationConstants.ALERT_CONTENT_ROW+
+            		","+ApplicationConstants.ALERT_RECURRING_ROW+" FROM "+ApplicationConstants.ALERTS_TABLE+";";
+            
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            while (rs.next()) {
+            	
+                Alert alert = new Alert();
+                alert.setAlertId(rs.getString(ApplicationConstants.ALERT_ID_ROW));
+                alert.setAlertType(rs.getString(ApplicationConstants.ALERT_TYPE_ROW));
+                alert.setAlertRecipients(rs.getString(ApplicationConstants.ALERT_RECIPIENTS_ROW));
+                alert.setAlertContent(rs.getString(ApplicationConstants.ALERT_CONTENT_ROW));
+                alert.setAlertRecurring(rs.getString(ApplicationConstants.ALERT_RECURRING_ROW));
+                alerts.add(alert);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+    
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+    
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+    
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+    
+        }
+        return alerts;
+    } // End of selectAllAlerts function.
+    
+    public Alert selectSpecificAlert(String alertId) {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        Alert alert = new Alert();
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            String sql;
+            sql = "SELECT "+ApplicationConstants.ALERT_ID_ROW+","+ApplicationConstants.ALERT_TYPE_ROW+
+            		","+ApplicationConstants.ALERT_RECIPIENTS_ROW+","+ApplicationConstants.ALERT_CONTENT_ROW+
+            		","+ApplicationConstants.ALERT_RECURRING_ROW+" FROM "+ApplicationConstants.ALERTS_TABLE+" WHERE "+
+            		ApplicationConstants.ALERT_ID_ROW+"=\'"+alertId+"\';";
+            
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            while (rs.next()) {
+            	
+                alert.setAlertId(rs.getString(ApplicationConstants.ALERT_ID_ROW));
+                alert.setAlertType(rs.getString(ApplicationConstants.ALERT_TYPE_ROW));
+                alert.setAlertRecipients(rs.getString(ApplicationConstants.ALERT_RECIPIENTS_ROW));
+                alert.setAlertContent(rs.getString(ApplicationConstants.ALERT_CONTENT_ROW));
+                alert.setAlertRecurring(rs.getString(ApplicationConstants.ALERT_RECURRING_ROW));
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+    
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+    
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+    
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+    
+        }
+        return alert;
+    } // End of selectSpecificAlert function.
 
 
 }
