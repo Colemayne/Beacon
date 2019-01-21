@@ -358,5 +358,101 @@ import beaconAPI.ApplicationConstants;
         return alert;
     } // End of selectSpecificAlert function.
 
+    public void addAlert(String alertId, String alertType, String alertRecipients, String alertContent, String alertRecurring) {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);            
+            stmt = conn.createStatement();
+            
+            String sql;
+            sql = "INSERT INTO "+ApplicationConstants.ALERTS_TABLE+" ("
+                    + ApplicationConstants.ALERT_ID_ROW + ","
+                    + ApplicationConstants.ALERT_TYPE_ROW + ","
+                    + ApplicationConstants.ALERT_RECIPIENTS_ROW + ","
+                    + ApplicationConstants.ALERT_CONTENT_ROW + ","
+                    + ApplicationConstants.ALERT_RECURRING_ROW + ") "
+            		+ "VALUES(\'"+alertId+"\',\'"+alertType+"\',\'"+alertRecipients+"\',\'"+alertContent+"\',\'"+alertRecurring+"\');";
+            
+            System.out.println(sql);
+            
+            // Incomplete function.
+            // Logic for grabbing all users that meet the department_id criteria and adding them into the active alerts database
+            // should be filled in here.
+            
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+
+              }   
+           try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    } // End of addAlert function.
+
+    public void delAlert(String alertId) {
+	
+       Connection conn = null;
+       Statement stmt = null;
+    
+        try {
+    	
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+        
+            String sql;
+            sql = "DELETE FROM "+ApplicationConstants.ALERTS_TABLE+" WHERE "+ApplicationConstants.ALERT_ID_ROW+"=\'"+alertId+"\';";
+        
+            System.out.println(sql);
+        
+            stmt.executeUpdate(sql);
+        
+        stmt.close();
+        conn.close();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+
+              }   
+           try {
+                if (conn != null) {
+                   conn.close();
+                }
+           } catch (SQLException se) {
+                se.printStackTrace();
+           }
+        }
+    } // End of delAlert function.
 
 }

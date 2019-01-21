@@ -106,17 +106,18 @@ public class HookController {
     }
 
     @RequestMapping(value = "/addAlert", method = RequestMethod.POST)
-    public String addAlert(@RequestBody String jsonString) throws Exception{
+    public void addAlert(@RequestBody String jsonString) throws Exception{
 
-        return "Add Alert";
+    	Alert alert = gson.fromJson(jsonString, Alert.class);
+        DBC.addAlert(alert.getAlertId(),alert.getAlertType(),alert.getAlertRecipients(),alert.getAlertContent(),alert.getAlertRecurring());
 
     }
 
     @RequestMapping(value = "/cancelAlert", method = RequestMethod.POST)
-    public String cancelAlert(@RequestBody String jsonString) throws Exception{
+    public void cancelAlert(@RequestBody String jsonString) throws Exception{
 
-        return "Cancel Alert";
-
+    	Alert alert = gson.fromJson(jsonString, Alert.class);
+    	DBC.delAlert(alert.getAlertId());
     }
 
     
