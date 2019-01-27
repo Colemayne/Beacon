@@ -127,7 +127,20 @@ public class HookController {
         String json = gson.toJson(department);
 
         return json;
+    }
+    
+    @RequestMapping(value = "/add/department", method = RequestMethod.POST)
+    public void addDepartment(@RequestBody String jsonString) throws Exception{
 
+    	Department department = gson.fromJson(jsonString, Department.class);
+    	DBC.addDepartment(department.getDepartmentId(), department.getDepartmentName());
+    }
+    
+    @RequestMapping(value = "/delete/department", method = RequestMethod.POST)
+    public void deleteDepartment(@RequestBody String jsonString) throws Exception{
+
+    	Department department = gson.fromJson(jsonString, Department.class);
+    	DBC.delAlert(department.getDepartmentId());
     }
     
 

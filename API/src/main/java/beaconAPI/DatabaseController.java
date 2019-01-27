@@ -381,14 +381,14 @@ import beaconAPI.ApplicationConstants;
             
             System.out.println(sql);
             
-            // Incomplete function.
-            // Logic for grabbing all users that meet the department_id criteria and adding them into the active alerts database
-            // should be filled in here.
+            
             
             stmt.executeUpdate(sql);
             
             stmt.close();
             conn.close();
+            
+            fillActiveAlerts(alertId, alertRecipients);
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -508,5 +508,154 @@ import beaconAPI.ApplicationConstants;
         }
         return departments;
     } // End of selectAllDepartments function.
+    
+    public void addDepartment(String departmentId, String departmentName) {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);            
+            stmt = conn.createStatement();
+            
+            String sql;
+            sql = "INSERT INTO "+ApplicationConstants.DEPARTMENTS_TABLE+" ("
+                    + ApplicationConstants.DEPARTMENT_ID_ROW + ","
+                    + ApplicationConstants.DEPARTMENT_NAME_ROW + ") "
+            		+ "VALUES(\'"+departmentId+"\',\'"+departmentName+"\');";
+            
+            System.out.println(sql);            
+            stmt.executeUpdate(sql);  
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+
+              }   
+           try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    } // End of addDepartment function.
+    
+    public void delDepartment(String departmentId) {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+     
+         try {
+     	
+             Class.forName("com.mysql.jdbc.Driver");
+             conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             stmt = conn.createStatement();
+         
+             String sql;
+             sql = "DELETE FROM "+ApplicationConstants.DEPARTMENTS_TABLE+" WHERE "+ApplicationConstants.DEPARTMENT_ID_ROW+"=\'"+departmentId+"\';";
+             System.out.println(sql);
+             stmt.executeUpdate(sql);
+         stmt.close();
+         conn.close();
+
+         } catch (SQLException se) {
+             se.printStackTrace();
+         } catch (Exception e) {
+             e.printStackTrace();
+         } finally {
+             try {
+                 if (stmt != null) {
+                     stmt.close();
+                 }
+             } catch (SQLException se2) {
+
+               }   
+            try {
+                 if (conn != null) {
+                    conn.close();
+                 }
+            } catch (SQLException se) {
+                 se.printStackTrace();
+            }
+         }
+    } // End of delDepartment function.
+    
+    public void fillActiveAlerts(String alertId, String department) {
+        Connection conn = null;
+        Statement stmt = null;
+        ArrayList<ActiveAlert> activeAlerts = new ArrayList<ActiveAlert>();
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);            
+            stmt = conn.createStatement();
+            
+            String sql;
+            sql = "SELECT "+ApplicationConstants.EMPLOYEE_ID_ROW+" FROM USERS WHERE department=\'"+department+"\';";
+            
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            while (rs.next()) {
+            	
+                ActiveAlert activeAlert = new ActiveAlert();
+                activeAlert.setAlertId(alertId);
+                activeAlert.setEmployeeId(rs.getString(ApplicationConstants.EMPLOYEE_ID_ROW));
+                activeAlert.setEmployeeResponse("0");
+                activeAlerts.add(activeAlert);
+            }
+            rs.close();
+            
+            int count = 0;
+            
+            while(activeAlerts.size() > count) {
+            	
+                sql = "INSERT INTO "+ApplicationConstants.ACTIVE_ALERTS_TABLE+" ("+ApplicationConstants.ALERT_ID_ROW+
+                		","+ApplicationConstants.EMPLOYEE_ID_ROW+","+ApplicationConstants.EMPLOYEE_RESPONSE_ROW+
+                		") VALUES(\'"+alertId+"\',\'"+activeAlerts.get(count).getEmployeeId()+"\',\'0\');";
+                stmt.executeUpdate(sql);
+                count++;
+            }
+            
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+
+              }   
+           try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    } // End of fillActiveAlerts function
+    
+    
 
 }
