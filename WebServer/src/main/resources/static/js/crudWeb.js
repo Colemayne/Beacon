@@ -48,7 +48,7 @@ window.onload = function() {
 
 function grabData() {
   // Set the request url to the predefined web API server.  Note* API must be running to populate from database.
-  var requestURL = 'http://127.0.0.1:8081/selectAll';
+  var requestURL = 'http://127.0.0.1:8081/select/user/all';
   var request = new XMLHttpRequest();
   request.open('GET', requestURL);
   request.responseType = 'json';
@@ -71,7 +71,7 @@ function sendNewUser() {
 
   // I don't have anything fancy to generate JSON right now. A function that accepts a Map and returns a valid JSON string would be awesome!  *Not required though*
   var params = '{"employee_id":"'+idValue+'","first_name":"'+fnValue+'","last_name":"'+lnValue+'","phone_number":"'+phValue+'","department":"'+dpValue+'","manager_id":"'+mnValue+'"}';
-  xhttp.open("POST", "http://localhost:8081/addUser", true);
+  xhttp.open("POST", "http://localhost:8081/add/user", true);
   xhttp.send(params);
 }
 
@@ -87,7 +87,7 @@ function deleteUser(e_id) {
   // Instead of allowing this behavior, we should ask the user if they are sure they want to delete this user.
   alert('deleteUser is called: value passed = '+e_id);
   var params = '{"employee_id":"'+delValue+'"}';
-  xhttp.open("POST", "http://localhost:8081/delUser", true);
+  xhttp.open("POST", "http://localhost:8081/delete/user", true);
   xhttp.send(params);
 }
 

@@ -454,5 +454,59 @@ import beaconAPI.ApplicationConstants;
            }
         }
     } // End of delAlert function.
+    
+    public ArrayList<Department> selectAllDepartments() {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        ArrayList<Department> departments = new ArrayList<Department>();
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            String sql;
+            sql = "SELECT "+ApplicationConstants.DEPARTMENT_ID_ROW+","+ApplicationConstants.DEPARTMENT_NAME_ROW+
+            		", FROM "+ApplicationConstants.DEPARTMENTS_TABLE+";";
+            
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            while (rs.next()) {
+            	
+                Department department = new Department();
+                department.setDepartmentId(rs.getString(ApplicationConstants.DEPARTMENT_ID_ROW));
+                department.setDepartmentName(rs.getString(ApplicationConstants.DEPARTMENT_NAME_ROW));
+                departments.add(department);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+    
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+    
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+    
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+    
+        }
+        return departments;
+    } // End of selectAllDepartments function.
 
 }
