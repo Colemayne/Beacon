@@ -47,6 +47,8 @@ public interface ApplicationConstants {
     public static final String ALERT_CONTENT_ROW = "alert_content";
 
     public static final String ALERT_RECURRING_ROW = "alert_recurring";
+    
+    public static final String EMPLOYEE_RESPONSE_ROW = "employee_response";
 
 
 	
