@@ -32,7 +32,7 @@ public class HookController {
      * Output: None.
      * Expected Behavior: Create a User object from the provided string. Call the DatabaseController's addUser function. 
      */
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/user", method = RequestMethod.POST)
     public void addUser(@RequestBody String jsonString) throws Exception {
 
         User user = gson.fromJson(jsonString, User.class);
@@ -45,7 +45,7 @@ public class HookController {
      * Output: None.
      * Expected Behavior: Create a User object from the provided string. Call the DatabaseController's delUser function. 
      */
-    @RequestMapping(value = "/delUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/user", method = RequestMethod.POST)
     public void delUser(@RequestBody String jsonString) throws Exception {
 
         User user = gson.fromJson(jsonString, User.class);
@@ -58,7 +58,7 @@ public class HookController {
      * Output: String.
      * Expected Behavior: The DatabaseController is called and the ArrayList of Users is returned in json format.
      */
-    @RequestMapping("/selectAll")
+    @RequestMapping("/select/user/all")
     public String returnAll(){
      
         ArrayList<User> users = DBC.selectAllUsers();
@@ -68,7 +68,7 @@ public class HookController {
 
     }
 
-    @RequestMapping("/selectNumUsers")
+    @RequestMapping("/select/user/number")
     public String selectNumUsers(){
     	
         String numOfUsers = DBC.selectNum(0);
@@ -77,7 +77,7 @@ public class HookController {
 
     }
 
-    @RequestMapping("/selectNumAlerts")
+    @RequestMapping("/select/alert/number")
     public String selectNumAlerts(){
 
         String numOfAlerts = DBC.selectNum(1);
@@ -86,7 +86,7 @@ public class HookController {
 
     }
 
-    @RequestMapping("/selectAllAlerts")
+    @RequestMapping("/select/alert/all")
     public String returnAllAlerts(){
 
     	ArrayList<Alert> alerts = DBC.selectAllAlerts();
@@ -96,7 +96,7 @@ public class HookController {
 
     }
 
-    @RequestMapping(value = "/selectSpecificAlert", method = RequestMethod.POST)
+    @RequestMapping(value = "/select/alert/specific", method = RequestMethod.POST)
     public String returnSpecificAlert(@RequestBody String jsonString) throws Exception{
 
     	Alert alert = DBC.selectSpecificAlert(jsonString);
@@ -105,7 +105,7 @@ public class HookController {
 
     }
 
-    @RequestMapping(value = "/addAlert", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/alert", method = RequestMethod.POST)
     public void addAlert(@RequestBody String jsonString) throws Exception{
 
     	Alert alert = gson.fromJson(jsonString, Alert.class);
@@ -113,13 +113,22 @@ public class HookController {
 
     }
 
-    @RequestMapping(value = "/cancelAlert", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/alert", method = RequestMethod.POST)
     public void cancelAlert(@RequestBody String jsonString) throws Exception{
 
     	Alert alert = gson.fromJson(jsonString, Alert.class);
     	DBC.delAlert(alert.getAlertId());
     }
+    
+    @RequestMapping("/select/departments/all")
+    public String returnAllDepartments(){
+     
+        ArrayList<Department> department = DBC.selectAllDepartments();
+        String json = gson.toJson(department);
 
+        return json;
+
+    }
     
 
 }
