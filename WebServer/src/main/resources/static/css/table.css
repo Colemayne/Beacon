@@ -1,0 +1,54 @@
+.userTablePane{
+  position: absolute;
+  height: 75%;
+  width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.userTableBar{
+  position: relative;
+  height: 80px;
+  width: 100%;
+  top: 0%;
+  left: 0%;
+  border-radius: 2px;
+  z-index: 2;
+  overflow: hidden;
+}
+.userTableColor1{
+  background: #fcffff;
+}
+.userTableColor2{
+  background: #f2f2f2;
+}
+.contentBox{
+  position: realitve;
+  height: 100%;
+  width: 20%;
+  top: 0;
+  left: 0;
+  float: left;
+  padding: 5px;
+}
+.contentBoxSmall{
+  position: realitve;
+  height: 100%;
+  width: 10%;
+  top: 0;
+  left: 0;
+  float: left;
+  padding: 5px;
+}
+.blockText{
+  position: relative;
+  top: 25%;
+  transform: translateY(-50%);
+  color: black;
+  font-size: 18px;
+  text-align: left;
+}
+.centered{
+  text-align: center;
+}
+
