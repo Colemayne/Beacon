@@ -29,10 +29,9 @@ allprojects {
 }
 
 task compileApp {
-    dependsOn(':API:bootJar',':WebServer:bootJar',':TwilioAPI:bootJar') doLast {
+    dependsOn(':API:bootJar',':WebServer:bootJar') doLast {
         copy { from "API/build/libs" into "${project.getBuildDir()}/services"; include "*.jar" }
         copy { from "WebServer/build/libs" into "${project.getBuildDir()}/services"; include "*.jar" }
-        copy { from "TwilioAPI/build/libs" into "${project.getBuildDir()}/services"; include "*.jar" }
     }
 }
 

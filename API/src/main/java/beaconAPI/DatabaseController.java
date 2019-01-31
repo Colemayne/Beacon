@@ -188,6 +188,66 @@ import beaconAPI.ApplicationConstants;
         return users;
     } // End of selectAllUsers function.
     
+    public ArrayList<User> selectGroupUsers(String department) {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        ArrayList<User> users = new ArrayList<User>();
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            String sql;
+            sql = "SELECT "+ApplicationConstants.EMPLOYEE_ID_ROW+","+ApplicationConstants.FIRST_NAME_ROW+
+            		","+ApplicationConstants.LAST_NAME_ROW+","+ApplicationConstants.PHONE_NUMBER_ROW+
+            		","+ApplicationConstants.DEPARTMENT_ROW+","+ApplicationConstants.MANAGER_ID_ROW+" FROM USERS "+
+            		"WHERE "+ApplicationConstants.DEPARTMENT_ROW+"=\'"+department+"\';";
+            
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            while (rs.next()) {
+            	
+                User user = new User();
+                user.setEmployeeId(rs.getString(ApplicationConstants.EMPLOYEE_ID_ROW));
+                user.setFirstName(rs.getString(ApplicationConstants.FIRST_NAME_ROW));
+                user.setLastName(rs.getString(ApplicationConstants.LAST_NAME_ROW));
+                user.setPhoneNumber(rs.getString(ApplicationConstants.PHONE_NUMBER_ROW));
+                user.setDepartment(rs.getString(ApplicationConstants.DEPARTMENT_ROW));
+                user.setManagerId(rs.getString(ApplicationConstants.MANAGER_ID_ROW));
+                users.add(user);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+    
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+    
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+    
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+    
+        }
+        return users;
+    } // End of selectGroupUsers function.
+    
     public String selectNum(int controlNum) {
     	
         Connection conn = null;
