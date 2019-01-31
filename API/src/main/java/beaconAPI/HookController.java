@@ -24,6 +24,7 @@ public class HookController {
 	// GSON is the library we will use to convert POJO (Plain Old Java Objects) to JSON (JavaScript Object Notation).
     Gson gson = new Gson();
     DatabaseController DBC = new DatabaseController();
+    MessageController messageController = new MessageController();
 
     /* RequestMapping annotations define routes and accepted protocols.
      * 
@@ -143,6 +144,19 @@ public class HookController {
     	DBC.delAlert(department.getDepartmentId());
     }
     
+    @RequestMapping(value = "/send/message/group", method = RequestMethod.POST)
+    public String sendMessage(@RequestBody String jsonString) throws Exception{
+
+        SendRequest sendRequest = gson.fromJson(jsonString, SendRequest.class);
+        ArrayList<User> users = DBC.selectGroupUsers(sendRequest.getRequest());
+        String json = gson.toJson(users);
+        for(User i : users) {
+        	messageController.sendMessage(i.getPhoneNumber(), "This is a message for you");
+        }
+        return json;
+
+    }
+
 
 }
 
