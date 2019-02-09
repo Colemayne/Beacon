@@ -54,6 +54,13 @@ public class HookController {
         DBC.delUser(user.getEmployeeId());
     }
     
+    @RequestMapping(value = "/edit/user", method = RequestMethod.POST)
+    public void editUser(@RequestBody String jsonString) throws Exception {
+
+        User user = gson.fromJson(jsonString, User.class);
+        DBC.editUser(user.getEmployeeId(),user.getFirstName(),user.getLastName(),user.getPhoneNumber(),user.getDepartment(),user.getManagerId());
+    }
+    
     /* This function is responsible for returning the ArrayList from the DatabaseController in json format.
      * Input: None.
      * Output: String.
@@ -99,9 +106,12 @@ public class HookController {
 
     @RequestMapping(value = "/select/alert/specific", method = RequestMethod.POST)
     public String returnSpecificAlert(@RequestBody String jsonString) throws Exception{
+    	
+    	Alert alert = gson.fromJson(jsonString, Alert.class);
 
-    	Alert alert = DBC.selectSpecificAlert(jsonString);
-    	String json = gson.toJson(alert);
+    	ArrayList<ActiveUser> activeUsers = DBC.selectSpecificAlert(alert.getAlertId());
+    	String json = gson.toJson(activeUsers);
+    	System.out.println("json: "+json);
         return json;
 
     }
@@ -110,7 +120,7 @@ public class HookController {
     public void addAlert(@RequestBody String jsonString) throws Exception{
 
     	Alert alert = gson.fromJson(jsonString, Alert.class);
-        DBC.addAlert(alert.getAlertId(),alert.getAlertType(),alert.getAlertRecipients(),alert.getAlertContent(),alert.getAlertRecurring());
+        DBC.addAlert(alert.getAlertId(),alert.getAlertTitle(),alert.getAlertType(),alert.getAlertRecipients(),alert.getAlertContent(),alert.getAlertRecurring());
 
     }
 
@@ -141,7 +151,7 @@ public class HookController {
     public void deleteDepartment(@RequestBody String jsonString) throws Exception{
 
     	Department department = gson.fromJson(jsonString, Department.class);
-    	DBC.delAlert(department.getDepartmentId());
+    	DBC.delDepartment(department.getDepartmentId());
     }
     
     @RequestMapping(value = "/send/message/group", method = RequestMethod.POST)

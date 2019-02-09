@@ -2,63 +2,179 @@
 <html>
     <head>
         <title>Beacon Web App</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <script type="text/javascript" src="js/crudWeb.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/mainContent.css">
-        <link rel="stylesheet" type="text/css" href="css/sideMenu.css">
-    </head>
-  <body>
-    <div class="background"></div>
-    
-    <div class="popupBackground" id="popupBG">
-    <div class="popupAddMain" id="popupAdd">
-      <div class="addX" id="addx"></div>
-      <div class="popupMain_header">
-         
-      </div>
-      <form class="popupForm">
-           <input type="text" class="popupTextbox" id="fnbox" placeholder="First Name:">
-           <input type="text" class="popupTextbox" id="lnbox" placeholder="Last Name:">
-           <input type="text" class="popupTextbox" id="idbox" placeholder="Employee Number:">
-           <input type="text" class="popupTextbox" id="phbox" placeholder="Phone Number:">
-           <input type="text" class="popupTextbox" id="mnbox" placeholder="Manager:">
-           <input type="text" class="popupTextbox" id="dpbox" placeholder="Department:">
-           
-        </form>
-      <button type="button" id="submitAdd" class="submitButton">Add User</button>
-    </div>
-    </div>
 
-    <div class="leftMenu">
-      <div class="icon"></div>
-      <div class="linkContainer">
-        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/';">
+ <!-- Meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script type="text/javascript" src="js/crudWeb.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/newPage.css">
+
+  <!-- Compiled and Minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="background"></div>
+  <button class="btn btn-circle btn-success mr-3 d-flex justify-content-center align-items-center addBtnFixed" data-toggle="modal" data-target="#addModal" style="border-radius:100px;"><img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1499509391/58a2031e6af142ce619ba2a2_plus-symbol_y6vqca.svg" class="" height="20"></button>
+
+  <div class="sideMenu dkred">
+    <div class="icon"></div>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/';">
           <div class="linkIcon"></div>
           <p class="linkText">Summary</p>
-        </button>
-        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/alerts';">
+    </button>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/alerts';">
           <div class="linkIcon"></div>
           <p class="linkText">Alerts</p>
-        </button>
-        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/crud';">
+    </button>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/crud';">
           <div class="linkIcon"></div>
           <p class="linkText">Users</p>
-        </button>
-      </div>
-    </div>
-    
-    <div class="topMenu">
-      <div class="addButton" id="addbtn"></div>
-    </div>
-    
-    <div class="contentPane">
-      
-      <div class="userTablePane">
-        <header></header>
-      </div>
-      
-    </div>
+    </button>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/departments';">
+          <div class="linkIcon"></div>
+          <p class="linkText">Departments</p>
+    </button>
+  </div>
 
-    
-  </body>
+  
+  <div class="contentPane">
+    <div class="col">
+    <div class="row align-items-center">
+      <div class="card mx-auto mt-5">
+        <h5 class="card-header">Users</h5>
+        <div class="card-body mx-auto">
+          <header></header>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  
+  
+  <div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Add User</h2>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col">
+                <label for="firstNameForm">First Name</label>
+                <input type="text" class="form-control"  id="firstNameForm">
+              </div>
+              <div class="col">
+                <label for="lastNameForm">Last Name</label>
+                <input type="text" class="form-control" id="lastNameForm">
+              </div>  
+            </div>
+            <div class="row pt-4">
+              <div class="col">
+                <label for="employeeIDForm">Employee ID</label>
+                <input type="text" class="form-control" id="employeeIDForm">
+              </div>
+              <div class="col">
+                <label for="managerIDForm">Manager ID</label>
+                <input type="text" class="form-control" id="managerIDForm">
+              </div>
+            </div>
+            <div class="row pt-4">
+              <div class="col">
+                <label for="phoneNumberForm">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumberForm">
+              </div>
+              <div class="col">
+                <label for="departmentForm">Department</label>
+                <select id="departmentForm" class="form-control">
+                  <option selected>Choose One</option>
+                  <option>IT</option>
+                  <option>Accounting</option>
+                  <option>QA</option>
+                  <option>Analyst</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="submitAdd">Submit</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="editModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Edit User</h2>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col">
+                <label for="efirstNameForm">First Name</label>
+                <input type="text" class="form-control"  id="efirstNameForm">
+              </div>
+              <div class="col">
+                <label for="elastNameForm">Last Name</label>
+                <input type="text" class="form-control" id="elastNameForm">
+              </div>  
+            </div>
+            <div class="row pt-4">
+              <div class="col">
+                <label for="eemployeeIDForm">Employee ID</label>
+                <input type="text" class="form-control" id="eemployeeIDForm">
+              </div>
+              <div class="col">
+                <label for="emanagerIDForm">Manager ID</label>
+                <input type="text" class="form-control" id="emanagerIDForm">
+              </div>
+            </div>
+            <div class="row pt-4">
+              <div class="col">
+                <label for="ephoneNumberForm">Phone Number</label>
+                <input type="text" class="form-control" id="ephoneNumberForm">
+              </div>
+              <div class="col">
+                <label for="edepartmentForm">Department</label>
+                <select id="edepartmentForm" class="form-control">
+                  <option selected>Choose One</option>
+                  <option>IT</option>
+                  <option>Accounting</option>
+                  <option>QA</option>
+                  <option>Analyst</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="submitEdit">Submit</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery Library -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+  </script>
+
+  <!-- Popper -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+
+  <!-- Compiled and Minified Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
 </html>

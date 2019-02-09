@@ -1,38 +1,81 @@
 <html>
   <head>
-    <title>Beacon Web App</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="css/summary.css">
-    <link rel="stylesheet" type="text/css" href="css/sideMenu.css">
-  </head>
+        <title>Beacon Web App</title>
+
+ <!-- Meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script type="text/javascript" src="js/alertWeb.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/newPage.css">
+
+  <!-- Compiled and Minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
   <body>
     <div class="background"></div>
-    <div class="leftMenu">
-      <div class="icon"></div>
-      <div class="linkContainer">
-        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/';">
+    <div class="sideMenu dkred">
+    <div class="icon"></div>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/';">
           <div class="linkIcon"></div>
           <p class="linkText">Summary</p>
-        </button>
-        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/alerts';">
+    </button>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/alerts';">
           <div class="linkIcon"></div>
           <p class="linkText">Alerts</p>
-        </button>
-        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/crud';">
+    </button>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/crud';">
           <div class="linkIcon"></div>
           <p class="linkText">Users</p>
-        </button>
-      </div>
-    </div>
+    </button>
+    <button class="sideMenuButtons dkred center" onclick="window.location='http://127.0.0.1:8080/departments';">
+          <div class="linkIcon"></div>
+          <p class="linkText">Departments</p>
+    </button>
+  </div>
     
-    <div class="topMenu center">
-        <p class="mainTextMenu">Summary<p>
-    </div>
     <div class="contentPane">
-      <div class="contentPaneContainer">
-        <header></header> 
+    <div class="contentPanel pt-5">
+      <h1 class="text-center">Beacon Web App</h1>
+    </div>
+    <div class="contentPanel">
+      <div class="cp4">
+        <div class="largeBox dkblue mx-auto pt-4">
+          <h2 class="text-center whiteText">200</h2>
+          <p class="text-center whiteText">Current Users</p>
+        </div>
+      </div>
+      <div class="cp4">
+        <div class="largeBox liblue mx-auto pt-5">
+          <h3 class="text-center whiteText">Total Alerts Sent</h3>
+        </div>
+      </div>
+      <div class="cp4">
+        <div class="largeBox dkred mx-auto pt-5">
+          <h3 class="text-center whiteText">Total Alerts Sent</h3>
+        </div>
+      </div>
+      <div class="cp4">
+        <div class="largeBox ligrey mx-auto pt-5">
+          <h3 class="text-center whiteText">Total Alerts Sent</h3>
+        </div>
       </div>
     </div>
+    <div class="contentPanel"></div>
+
+  </div>
+    
+    <!-- jQuery Library -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+  </script>
+
+  <!-- Popper -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+
+  <!-- Compiled and Minified Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
     
   </body>
 </html>
