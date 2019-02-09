@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <script type="text/javascript" src="js/alertWeb.js"></script>
+  <script type="text/javascript" src="js/departmentWeb.js"></script>
   <link rel="stylesheet" type="text/css" href="css/newPage.css">
 
   <!-- Compiled and Minified Bootstrap CSS -->
@@ -43,7 +43,7 @@
     <div class="col">
     <div class="row align-items-center">
       <div class="card mx-auto mt-5">
-        <h5 class="card-header">Alerts</h5>
+        <h5 class="card-header">Departments</h5>
         <div class="card-body mx-auto">
           <header></header>
         </div>
@@ -52,55 +52,19 @@
     </div>
   </div>
   
-  
   <div class="modal fade" id="addModal">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title">Add Alert</h2>
+          <h2 class="modal-title" id="alertTitleText">Add Department</h2>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
           <form>
             <div class="row">
               <div class="col">
-                <label for="alertTitleForm">Title</label>
-                <input type="text" class="form-control"  id="alertTitleForm">
-              </div>
-              <div class="col">
-                <label for="alertTypeForm">Type</label>
-                <select id="alertTypeForm" class="form-control">
-                  <option selected>Choose One</option>
-                  <option>Poll</option>
-                  <option>Informational</option>
-                  <option>Urgent</option>
-                  <option>Emergency</option>
-                </select>
-              </div>  
-            </div>
-            <div class="row pt-4">
-              <div class="col">
-                <label for="alertRecipientsForm">Recipients</label>
-                <select id="alertRecipientsForm" class="form-control">
-                  <option selected>Choose One</option>
-                  <option>All</option>
-                  <option>QA</option>
-                  <option>IT</option>
-                  <option>Accounting</option>
-                </select>
-              </div> 
-              <div class="col">
-                <label for="alertRecurringForm">Recurring</label>
-                <select id="alertRecurringForm" class="form-control">
-                  <option selected>No</option>
-                  <option>Yes</option>
-                </select>
-              </div>
-            </div>
-             <div class="row pt-4">
-              <div class="col">
-                <label for="alertContentForm">Content</label>
-                <input class="form-control" id="alertContentForm">
+                <label for="addNameForm">Department Name</label>
+                <input type="text" class="form-control" id="addNameForm">
               </div>
             </div>
           </form>
@@ -113,23 +77,7 @@
     </div>
   </div>
   
-  <div class="modal fade" id="infoModal">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title" id="alertTitleText">ALERT_TITLE</h2>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div id="modalContent"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  
   <!-- jQuery Library -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
   </script>

@@ -3,6 +3,7 @@ package beaconAPI;
 public class Alert {
 
 private String alert_id;
+private String alert_title;
 private String alert_type;
 private String alert_recipients;
 private String alert_content;
@@ -13,6 +14,13 @@ public String getAlertId() {
 }
 public void setAlertId(String alert_id){
     this.alert_id = alert_id;
+}
+
+public String getAlertTitle() {
+	return alert_title;
+}
+public void setAlertTitle(String alert_title) {
+	this.alert_title = alert_title;
 }
 
 public String getAlertType(){

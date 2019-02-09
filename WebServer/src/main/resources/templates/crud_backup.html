@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Beacon Web App</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="js/crudWeb.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/mainContent.css">
+        <link rel="stylesheet" type="text/css" href="css/sideMenu.css">
+
+        <!-- Compiled and Minified Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <!-- jQuery Library -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"> </script>
+
+        <!-- Popper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"> </script>
+
+        <!-- Compiled and Minified Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+
+    </head>
+  <body>
+    <div class="background"></div>
+    
+    <div class="popupBackground" id="popupBG">
+    <div class="popupAddMain" id="popupAdd">
+      <div class="addX" id="addx"></div>
+      <div class="popupMain_header">
+         
+      </div>
+      <form class="popupForm">
+           <input type="text" class="popupTextbox" id="fnbox" placeholder="First Name:">
+           <input type="text" class="popupTextbox" id="lnbox" placeholder="Last Name:">
+           <input type="text" class="popupTextbox" id="idbox" placeholder="Employee Number:">
+           <input type="text" class="popupTextbox" id="phbox" placeholder="Phone Number:">
+           <input type="text" class="popupTextbox" id="mnbox" placeholder="Manager:">
+           <input type="text" class="popupTextbox" id="dpbox" placeholder="Department:">
+           
+        </form>
+      <button type="button" id="submitAdd" class="submitButton">Add User</button>
+    </div>
+    </div>
+
+    <div class="leftMenu">
+      <div class="icon"></div>
+      <div class="linkContainer">
+        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/';">
+          <div class="linkIcon"></div>
+          <p class="linkText">Summary</p>
+        </button>
+        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/alerts';">
+          <div class="linkIcon"></div>
+          <p class="linkText">Alerts</p>
+        </button>
+        <button class="linkButton center" onclick="window.location='http://127.0.0.1:8080/crud';">
+          <div class="linkIcon"></div>
+          <p class="linkText">Users</p>
+        </button>
+      </div>
+    </div>
+    
+    <div class="topMenu">
+      <div class="addButton" id="addbtn"></div>
+    </div>
+    
+    <div class="contentPane">
+      
+      <div class="userTablePane">
+        <header></header>
+      </div>
+      
+    </div>
+
+    
+  </body>
+</html>

@@ -25,6 +25,10 @@ public class HookController {
 
         return "alerts";
     }
-
+    
+    @GetMapping("/departments")
+    public String departments(){
+        return "departments";
+    }
 
 }

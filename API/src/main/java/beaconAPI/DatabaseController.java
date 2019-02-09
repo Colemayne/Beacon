@@ -123,6 +123,57 @@ import beaconAPI.ApplicationConstants;
         }
     } // End of delUser function.
     
+    public void editUser(String empId, String firstName, String lastName, String phoneNumber, String department, String managerId) {
+    	
+        Connection conn = null;
+        Statement stmt = null;
+        
+        try {
+        	
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);            
+            stmt = conn.createStatement();
+            
+            String sql;
+            
+            sql = "UPDATE "+ApplicationConstants.USERS_TABLE+" SET "
+            		+ ApplicationConstants.FIRST_NAME_ROW+"=\'"+firstName+"\', "
+            		+ ApplicationConstants.LAST_NAME_ROW+"=\'"+lastName+"\', "
+            		+ ApplicationConstants.PHONE_NUMBER_ROW+"=\'"+phoneNumber+"\', "
+            		+ ApplicationConstants.DEPARTMENT_ROW+"=\'"+department+"\', "
+            		+ ApplicationConstants.MANAGER_ID_ROW+"=\'"+managerId+"\' WHERE "
+            		+ ApplicationConstants.EMPLOYEE_ID_ROW+"=\'"+empId+"\';";
+            
+            System.out.println(sql);
+            
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException se2) {
+
+              }   
+           try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    } // End of editUser function.
+    
     /* This function is responsible for returning all users currently in the database.    
      * Input: None.
      * Output: ArrayList<User>.
@@ -144,7 +195,8 @@ import beaconAPI.ApplicationConstants;
             String sql;
             sql = "SELECT "+ApplicationConstants.EMPLOYEE_ID_ROW+","+ApplicationConstants.FIRST_NAME_ROW+
             		","+ApplicationConstants.LAST_NAME_ROW+","+ApplicationConstants.PHONE_NUMBER_ROW+
-            		","+ApplicationConstants.DEPARTMENT_ROW+","+ApplicationConstants.MANAGER_ID_ROW+" FROM USERS;";
+            		","+ApplicationConstants.DEPARTMENT_ROW+","+ApplicationConstants.MANAGER_ID_ROW+" FROM USERS ORDER BY "+
+            		ApplicationConstants.LAST_NAME_ROW+";";
             
             ResultSet rs = stmt.executeQuery(sql);
     
@@ -204,7 +256,7 @@ import beaconAPI.ApplicationConstants;
             sql = "SELECT "+ApplicationConstants.EMPLOYEE_ID_ROW+","+ApplicationConstants.FIRST_NAME_ROW+
             		","+ApplicationConstants.LAST_NAME_ROW+","+ApplicationConstants.PHONE_NUMBER_ROW+
             		","+ApplicationConstants.DEPARTMENT_ROW+","+ApplicationConstants.MANAGER_ID_ROW+" FROM USERS "+
-            		"WHERE "+ApplicationConstants.DEPARTMENT_ROW+"=\'"+department+"\';";
+            		"WHERE "+ApplicationConstants.DEPARTMENT_ROW+"=\'"+department+"\' ORDER BY "+ApplicationConstants.LAST_NAME_ROW+" ;";
             
             ResultSet rs = stmt.executeQuery(sql);
     
@@ -316,7 +368,7 @@ import beaconAPI.ApplicationConstants;
             stmt = conn.createStatement();
             
             String sql;
-            sql = "SELECT "+ApplicationConstants.ALERT_ID_ROW+","+ApplicationConstants.ALERT_TYPE_ROW+
+            sql = "SELECT "+ApplicationConstants.ALERT_ID_ROW+","+ApplicationConstants.ALERT_TYPE_ROW+","+ApplicationConstants.ALERT_TITLE_ROW+
             		","+ApplicationConstants.ALERT_RECIPIENTS_ROW+","+ApplicationConstants.ALERT_CONTENT_ROW+
             		","+ApplicationConstants.ALERT_RECURRING_ROW+" FROM "+ApplicationConstants.ALERTS_TABLE+";";
             
@@ -326,6 +378,7 @@ import beaconAPI.ApplicationConstants;
             	
                 Alert alert = new Alert();
                 alert.setAlertId(rs.getString(ApplicationConstants.ALERT_ID_ROW));
+                alert.setAlertTitle(rs.getString(ApplicationConstants.ALERT_TITLE_ROW));
                 alert.setAlertType(rs.getString(ApplicationConstants.ALERT_TYPE_ROW));
                 alert.setAlertRecipients(rs.getString(ApplicationConstants.ALERT_RECIPIENTS_ROW));
                 alert.setAlertContent(rs.getString(ApplicationConstants.ALERT_CONTENT_ROW));
@@ -361,12 +414,11 @@ import beaconAPI.ApplicationConstants;
         return alerts;
     } // End of selectAllAlerts function.
     
-    public Alert selectSpecificAlert(String alertId) {
+    public ArrayList<ActiveUser> selectSpecificAlert(String alertId) {
     	
         Connection conn = null;
         Statement stmt = null;
-        Alert alert = new Alert();
-        
+        ArrayList<ActiveUser> returnedUsers = new ArrayList<ActiveUser>();
         try {
         	
             Class.forName("com.mysql.jdbc.Driver");
@@ -374,20 +426,21 @@ import beaconAPI.ApplicationConstants;
             stmt = conn.createStatement();
             
             String sql;
-            sql = "SELECT "+ApplicationConstants.ALERT_ID_ROW+","+ApplicationConstants.ALERT_TYPE_ROW+
-            		","+ApplicationConstants.ALERT_RECIPIENTS_ROW+","+ApplicationConstants.ALERT_CONTENT_ROW+
-            		","+ApplicationConstants.ALERT_RECURRING_ROW+" FROM "+ApplicationConstants.ALERTS_TABLE+" WHERE "+
-            		ApplicationConstants.ALERT_ID_ROW+"=\'"+alertId+"\';";
             
+            sql = "SELECT "+ApplicationConstants.FIRST_NAME_ROW+","+ApplicationConstants.LAST_NAME_ROW+","+ApplicationConstants.EMPLOYEE_RESPONSE_ROW+
+            		" FROM "+ApplicationConstants.USERS_TABLE+","+ApplicationConstants.ACTIVE_ALERTS_TABLE+
+            		" WHERE USERS.employee_id=ACTIVE_ALERTS.employee_id AND alert_id=\'"+alertId+"\';";
+
             ResultSet rs = stmt.executeQuery(sql);
+            
+            
     
             while (rs.next()) {
-            	
-                alert.setAlertId(rs.getString(ApplicationConstants.ALERT_ID_ROW));
-                alert.setAlertType(rs.getString(ApplicationConstants.ALERT_TYPE_ROW));
-                alert.setAlertRecipients(rs.getString(ApplicationConstants.ALERT_RECIPIENTS_ROW));
-                alert.setAlertContent(rs.getString(ApplicationConstants.ALERT_CONTENT_ROW));
-                alert.setAlertRecurring(rs.getString(ApplicationConstants.ALERT_RECURRING_ROW));
+            	ActiveUser activeUser = new ActiveUser();
+            	activeUser.setFirstName(rs.getString(ApplicationConstants.FIRST_NAME_ROW));
+            	activeUser.setLastName(rs.getString(ApplicationConstants.LAST_NAME_ROW));
+            	activeUser.setEmployeeResponse(rs.getString(ApplicationConstants.EMPLOYEE_RESPONSE_ROW));
+            	returnedUsers.add(activeUser);
             }
             rs.close();
             stmt.close();
@@ -415,10 +468,10 @@ import beaconAPI.ApplicationConstants;
             }
     
         }
-        return alert;
+        return returnedUsers;
     } // End of selectSpecificAlert function.
 
-    public void addAlert(String alertId, String alertType, String alertRecipients, String alertContent, String alertRecurring) {
+    public void addAlert(String alertId, String alertTitle, String alertType, String alertRecipients, String alertContent, String alertRecurring) {
     	
         Connection conn = null;
         Statement stmt = null;
@@ -433,11 +486,12 @@ import beaconAPI.ApplicationConstants;
             String sql;
             sql = "INSERT INTO "+ApplicationConstants.ALERTS_TABLE+" ("
                     + ApplicationConstants.ALERT_ID_ROW + ","
+                    + ApplicationConstants.ALERT_TITLE_ROW + ","
                     + ApplicationConstants.ALERT_TYPE_ROW + ","
                     + ApplicationConstants.ALERT_RECIPIENTS_ROW + ","
                     + ApplicationConstants.ALERT_CONTENT_ROW + ","
                     + ApplicationConstants.ALERT_RECURRING_ROW + ") "
-            		+ "VALUES(\'"+alertId+"\',\'"+alertType+"\',\'"+alertRecipients+"\',\'"+alertContent+"\',\'"+alertRecurring+"\');";
+            		+ "VALUES(\'"+alertId+"\',\'"+alertTitle+"\',\'"+alertType+"\',\'"+alertRecipients+"\',\'"+alertContent+"\',\'"+alertRecurring+"\');";
             
             System.out.println(sql);
             
@@ -529,7 +583,7 @@ import beaconAPI.ApplicationConstants;
             
             String sql;
             sql = "SELECT "+ApplicationConstants.DEPARTMENT_ID_ROW+","+ApplicationConstants.DEPARTMENT_NAME_ROW+
-            		", FROM "+ApplicationConstants.DEPARTMENTS_TABLE+";";
+            		" FROM "+ApplicationConstants.DEPARTMENTS_TABLE+";";
             
             ResultSet rs = stmt.executeQuery(sql);
     

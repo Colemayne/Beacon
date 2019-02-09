@@ -45,6 +45,8 @@ public interface ApplicationConstants {
     public static final String ACTIVE_ALERTS_TABLE = "ACTIVE_ALERTS";
 
     public static final String ALERT_ID_ROW = "alert_id";
+    
+    public static final String ALERT_TITLE_ROW = "alert_title";
 
     public static final String ALERT_TYPE_ROW = "alert_type";
 
