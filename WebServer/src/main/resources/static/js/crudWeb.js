@@ -54,6 +54,21 @@ window.onload = function() {
     // Quickly reloads all of the elements to reflect the change to the database.
     location.reload();
   }
+  
+  document.querySelector('#choose-file').addEventListener('click', function() {
+	document.querySelector('#upload-file').click();
+  });
+  
+  document.querySelector('#upload-file').addEventListener('change', function() {
+      var file = this.files[0];
+      var reader = new FileReader();
+      reader.onload = function () {
+          bulkSplit(reader.result);
+      };
+      
+      reader.readAsBinaryString(file);
+      
+  });
 
 }
 
@@ -69,6 +84,22 @@ function grabData() {
   request.responseType = 'json';
   request.send();
   return request;
+}
+
+function bulkSplit(csvString) {
+  var arr = csvString.split('\n');
+  var jsonObj = [];
+  var headers = ["employee_id","first_name","last_name","phone_number","department","manager_id"];
+  for(var i = 1; i < arr.length; i++){
+    var data = arr[i].split(',');
+    var obj = {};
+    for(var j = 0; j < data.length; j++) {
+        obj[headers[j].trim()] = data[j].trim();
+    }
+    jsonObj.push(obj);
+  }
+  
+  sendBulkUsers(jsonObj); 
 }
 
 // This function takes the fields from the popup menu and converts them into valid json to be sent to the web API.
@@ -88,6 +119,22 @@ function sendNewUser() {
   var params = '{"employee_id":"'+idValue+'","first_name":"'+fnValue+'","last_name":"'+lnValue+'","phone_number":"'+phValue+'","department":"'+dpValue+'","manager_id":"'+mnValue+'"}';
   xhttp.open("POST", "http://localhost:8081/add/user", true);
   xhttp.send(params);
+}
+function sendBulkUsers(arr) {
+    
+    var bulkList = arr;
+    
+    for(var i = 0; i < bulkList.length; i++){
+      var b = new Employee(bulkList[i].employee_id, bulkList[i].first_name, bulkList[i].last_name, bulkList[i].phone_number, bulkList[i].department, bulkList[i].manager_id);
+      
+      var xhttp = new XMLHttpRequest();
+      var params = '{"employee_id":"'+b.employee_id+'","first_name":"'+b.first_name+'","last_name":"'+b.last_name+'","phone_number":"'+b.phone_number+'","department":"'+b.department+'","manager_id":"'+b.manager_id+'"}';
+      xhttp.open("POST", "http://localhost:8081/add/user", true);
+      xhttp.send(params);
+      
+    }
+    
+    location.reload();
 }
 
 function sendUpdatedUser() {
