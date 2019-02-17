@@ -1,8 +1,3 @@
-var request = grabData();
-
-var Alerts = [];
-
-var ActiveUsers = [];
 
 var AlertTitle = "ALERT_TITLE";
 
@@ -26,16 +21,47 @@ let ActiveUser = class {
 };
 
 window.onload = function() {
+  var Alerts = [];
+  var ActiveUsers = [];
+  var httpRequest;
+  var httpModalRequest;
   
-  request.onload = function() { 
-
-    var alerts = request.response;
+  var requestURL = "http://127.0.0.1:8081/select/alert/all";
+  var requestModalURL = 'http://127.0.0.1:8081/select/alert/specific';
+  var request = makeRequest();
+  
+  
+  function makeRequest() {
+    httpRequest = new XMLHttpRequest();
     
-    addAlerts(alerts);
-    
-    deleteAlertIcon(document.querySelectorAll('.delButton'));
-    infoAlertIcon(document.querySelectorAll('.infoButton'));
-
+    if (!httpRequest) {
+        alert('issue with creating XMLHTTP instance');
+        return false;
+    }
+    httpRequest.onreadystatechange = addAlerts;
+    httpRequest.open('GET', requestURL);
+    httpRequest.responseType = 'json';
+    httpRequest.send();
+  }
+  
+  
+  function addAlerts() {
+    try {
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest.status === 200) {
+          var alertList = httpRequest.response;
+          for (var i = 0; i < alertList.length; i++){
+            var a = new Alert(alertList[i].alert_id,alertList[i].alert_title,alertList[i].alert_type, alertList[i].alert_recipients, alertList[i].alert_content, alertList[i].alert_recurring);
+            Alerts.push(a);
+          }
+          populateTable(Alerts);
+          deleteAlertIcon(document.querySelectorAll('.delButton'));
+          infoAlertIcon(document.querySelectorAll('.infoButton'));
+        }
+      }
+    } catch(e) {
+      alert('Caught Exception: ' + e.description);
+    }
   }
   
   document.getElementById('submitAdd').onclick = function() {
@@ -44,31 +70,84 @@ window.onload = function() {
     // Quickly reloads all of the elements to reflect the change to the database.
     location.reload();
   }
+  
+  function deleteAlertIcon(elem) {
+    for (var i = 0; i < elem.length; i++) {
+      elem[i].addEventListener("click", function(e) {
+        var current = this;
+        for (var i = 0; i < elem.length; i++) {
+          if (current != elem[i]) {
+          }
+          else {
+             deleteAlert(Alerts[i].alert_id);
+             location.reload();
+          }
+        }
+        e.preventDefault();
+      });
+    };
+  }
+
+  function infoAlertIcon(elem) {
+    for (var i = 0; i < elem.length; i++) {
+      elem[i].addEventListener("click", function(e) {
+        var current = this;
+        for (var i = 0; i < elem.length; i++) {
+          if (current != elem[i]) {
+          }
+          else {
+            ActiveUsers = [];
+            var modalRequest = grabModalRequest(Alerts[i].alert_id,Alerts[i].alert_title);
+            $("#infoModal").modal("toggle");   
+          }
+        }
+        e.preventDefault();
+      });
+    };
+  }
+  
+  function grabModalRequest(alertId, title){
+    AlertTitle = title;
+    httpModalRequest = new XMLHttpRequest();
+    if (!httpModalRequest){
+      alert('issue with creating XMLHTTP instance');
+      return false;
+    }
+    
+    httpModalRequest.onreadystatechange = function () {
+        if (httpModalRequest.readyState === XMLHttpRequest.DONE){
+          if (httpModalRequest.status === 200) {
+            addActiveAlerts();
+          }
+        }
+    };
+    var params = '{"alert_id":"'+alertId+'"}';
+    httpModalRequest.open('POST', requestModalURL);
+    httpModalRequest.responseType = 'json';
+    httpModalRequest.send(params);
+  }
+  
+  function addActiveAlerts() {
+    if (httpModalRequest.readyState === XMLHttpRequest.DONE){
+      if (httpModalRequest.status === 200) {
+        var userList = httpModalRequest.response;
+        for (var i = 0; i < userList.length; i++) {
+          var u = new ActiveUser(userList[i].first_name,userList[i].last_name,userList[i].employee_response);
+          ActiveUsers.push(u);
+        }
+        populateModal(ActiveUsers);
+      } else {
+        alert("not matching 200");
+      }
+    } else {
+      alert("Doesn't match DONE");
+    }
+  }  
 
 }
 
 function hashCode(s) {
   return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
-}
-
-function grabData() {
-  var requestURL = 'http://127.0.0.1:8081/select/alert/all';
-  var request = new XMLHttpRequest();
-  request.open('GET', requestURL);
-  request.responseType = 'json';
-  request.send();
-  return request;
-}
-
-function grabModalData(alertId, title) {
-  var requestURL = 'http://127.0.0.1:8081/select/alert/specific';
-  var request = new XMLHttpRequest();
-  var params = '{"alert_id":"'+alertId+'"}';
-  request.open('POST', requestURL);
-  request.responseType = 'json';
-  request.send(params);
-  
-  return request;
 }
 
 function sendNewAlert() {
@@ -100,25 +179,6 @@ function deleteAlert(a_id) {
   var params = '{"alert_id":"'+delValue+'"}';
   xhttp.open("POST", "http://localhost:8081/delete/alert", true);
   xhttp.send(params);
-}
-
-function addAlerts(arr) {
-
-  var alertList = arr;
-  for (var i = 0; i < alertList.length; i++){
-    var a = new Alert(alertList[i].alert_id,alertList[i].alert_title,alertList[i].alert_type, alertList[i].alert_recipients, alertList[i].alert_content, alertList[i].alert_recurring);
-    Alerts.push(a);
-  }
-  populateTable(Alerts);
-}
-
-function addActiveUsers( arr) {
-  var userList = arr;
-  for (var i = 0; i < userList.length; i++) {
-    var u = new ActiveUser(userList[i].first_name,userList[i].last_name,userList[i].employee_response);
-    ActiveUsers.push(u);
-  }
-  populateModal(ActiveUsers);
 }
 
 function populateTable(arr){
@@ -222,6 +282,11 @@ function populateTable(arr){
 function populateModal(arr) {
   
   var modalContent = document.querySelector('#modalContent');
+  
+  while (modalContent.firstChild) {
+    modalContent.removeChild(modalContent.firstChild);
+  }
+  
   var modalTitle = document.querySelector('#alertTitleText');
   
   modalTitle.textContent = AlertTitle;
@@ -278,60 +343,3 @@ function populateModal(arr) {
   modalContent.appendChild(peopleTable);
   
 }
-
-
-
-function deleteAlertIcon(elem) {
-  for (var i = 0; i < elem.length; i++) {
-    elem[i].addEventListener("click", function(e) {
-      var current = this;
-      for (var i = 0; i < elem.length; i++) {
-        if (current != elem[i]) {
-
-        }
-        else {
-             deleteAlert(Alerts[i].alert_id);
-             location.reload();
-        }
-      }
-      e.preventDefault();
-    });
-  };
-}
-
-function infoAlertIcon(elem) {
-  for (var i = 0; i < elem.length; i++) {
-    elem[i].addEventListener("click", function(e) {
-      var current = this;
-      for (var i = 0; i < elem.length; i++) {
-        if (current != elem[i]) {
-
-        }
-        else {
-          
-          var modalRequest = grabModalData(Alerts[i].alert_id,Alerts[i].alert_title);
-          AlertTitle = Alerts[i].alert_title;
-          modalRequest.onload = function() {
-              users = modalRequest.response;
-              addActiveUsers(users);
-          
-          }
-
-          $("#infoModal").modal("toggle");
-          
-             
-        }
-      }
-      e.preventDefault();
-    });
-  };
-}
-
-
-
-
-
-
-
-
-
