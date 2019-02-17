@@ -17,6 +17,13 @@ let Employee = class {
   }
 };
 
+let Department = class{
+  constructor(department_id, department_name){
+    this.department_id = department_id;
+    this.department_name = department_name;
+  }
+};
+
 // Defining behavior for when the page has fully loaded.
 window.onload = function() {
   
@@ -31,6 +38,7 @@ window.onload = function() {
     addPeople(employees);
     // Starts deleteUserIcon() function.
     deleteUserIcon(document.querySelectorAll('.delButton'));
+    editUserIcon(document.querySelectorAll('.editButton'));
   }
   // Defines what will happen when an element defined by the ID 'submitAdd' gets pressed.
   document.getElementById('submitAdd').onclick = function() {
@@ -39,12 +47,34 @@ window.onload = function() {
     // Quickly reloads all of the elements to reflect the change to the database.
     location.reload();
   }
-  // Defines functions for addbtn and addx.
-  document.getElementById("addbtn").onclick = function() {addUserForm()};
-  document.getElementById("addx").onclick = function() {addUserForm()};
+  
+  document.getElementById('submitEdit').onclick = function() {
+    // Function to post to web API.
+    sendUpdatedUser();
+    // Quickly reloads all of the elements to reflect the change to the database.
+    location.reload();
+  }
+  
+  document.querySelector('#choose-file').addEventListener('click', function() {
+	document.querySelector('#upload-file').click();
+  });
+  
+  document.querySelector('#upload-file').addEventListener('change', function() {
+      var file = this.files[0];
+      var reader = new FileReader();
+      reader.onload = function () {
+          bulkSplit(reader.result);
+      };
+      
+      reader.readAsBinaryString(file);
+      
+  });
 
 }
 
+function hashCode(s) {
+  return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+}
 
 function grabData() {
   // Set the request url to the predefined web API server.  Note* API must be running to populate from database.
@@ -56,28 +86,71 @@ function grabData() {
   return request;
 }
 
+function bulkSplit(csvString) {
+  var arr = csvString.split('\n');
+  var jsonObj = [];
+  var headers = ["employee_id","first_name","last_name","phone_number","department","manager_id"];
+  for(var i = 1; i < arr.length; i++){
+    var data = arr[i].split(',');
+    var obj = {};
+    for(var j = 0; j < data.length; j++) {
+        obj[headers[j].trim()] = data[j].trim();
+    }
+    jsonObj.push(obj);
+  }
+  
+  sendBulkUsers(jsonObj); 
+}
+
 // This function takes the fields from the popup menu and converts them into valid json to be sent to the web API.
 // This is where form validation logic will need to be placed.  It's reccomended that we define what we expect in each text box.
 // If one of the forms don't match, we can place a red marker by it and let them try again.  Closing out of the popup should clear the forms.
 function sendNewUser() {
   var xhttp = new XMLHttpRequest();
   // All of these ID's can be found within the HTML.
-  var idValue = document.getElementById('idbox').value;
-  var fnValue = document.getElementById('fnbox').value;
-  var lnValue = document.getElementById('lnbox').value;
-  var phValue = document.getElementById('phbox').value;
-  var dpValue = document.getElementById('dpbox').value;
-  var mnValue = document.getElementById('mnbox').value;
+  var idValue = document.getElementById('employeeIDForm').value;
+  var fnValue = document.getElementById('firstNameForm').value;
+  var lnValue = document.getElementById('lastNameForm').value;
+  var phValue = document.getElementById('phoneNumberForm').value;
+  var dpValue = document.getElementById('departmentForm').value;
+  var mnValue = document.getElementById('managerIDForm').value;
 
   // I don't have anything fancy to generate JSON right now. A function that accepts a Map and returns a valid JSON string would be awesome!  *Not required though*
   var params = '{"employee_id":"'+idValue+'","first_name":"'+fnValue+'","last_name":"'+lnValue+'","phone_number":"'+phValue+'","department":"'+dpValue+'","manager_id":"'+mnValue+'"}';
   xhttp.open("POST", "http://localhost:8081/add/user", true);
   xhttp.send(params);
 }
+function sendBulkUsers(arr) {
+    
+    var bulkList = arr;
+    
+    for(var i = 0; i < bulkList.length; i++){
+      var b = new Employee(bulkList[i].employee_id, bulkList[i].first_name, bulkList[i].last_name, bulkList[i].phone_number, bulkList[i].department, bulkList[i].manager_id);
+      
+      var xhttp = new XMLHttpRequest();
+      var params = '{"employee_id":"'+b.employee_id+'","first_name":"'+b.first_name+'","last_name":"'+b.last_name+'","phone_number":"'+b.phone_number+'","department":"'+b.department+'","manager_id":"'+b.manager_id+'"}';
+      xhttp.open("POST", "http://localhost:8081/add/user", true);
+      xhttp.send(params);
+      
+    }
+    
+    location.reload();
+}
 
-// Toggles the add user popup.
-function addUserForm() {
-  document.getElementById("popupBG").classList.toggle("unhidden");
+function sendUpdatedUser() {
+  var xhttp = new XMLHttpRequest();
+  // All of these ID's can be found within the HTML.
+  var idValue = document.getElementById('eemployeeIDForm').value;
+  var fnValue = document.getElementById('efirstNameForm').value;
+  var lnValue = document.getElementById('elastNameForm').value;
+  var phValue = document.getElementById('ephoneNumberForm').value;
+  var dpValue = document.getElementById('edepartmentForm').value;
+  var mnValue = document.getElementById('emanagerIDForm').value;
+
+  // I don't have anything fancy to generate JSON right now. A function that accepts a Map and returns a valid JSON string would be awesome!  *Not required though*
+  var params = '{"employee_id":"'+idValue+'","first_name":"'+fnValue+'","last_name":"'+lnValue+'","phone_number":"'+phValue+'","department":"'+dpValue+'","manager_id":"'+mnValue+'"}';
+  xhttp.open("POST", "http://localhost:8081/edit/user", true);
+  xhttp.send(params);
 }
 
 // It may be helpful to have the web API's HookController class available to see how each JSON string should be structured before sending.
@@ -85,7 +158,6 @@ function deleteUser(e_id) {
   var xhttp = new XMLHttpRequest();
   var delValue = e_id;
   // Instead of allowing this behavior, we should ask the user if they are sure they want to delete this user.
-  alert('deleteUser is called: value passed = '+e_id);
   var params = '{"employee_id":"'+delValue+'"}';
   xhttp.open("POST", "http://localhost:8081/delete/user", true);
   xhttp.send(params);
@@ -107,73 +179,110 @@ function addPeople(arr) {
 
 // Most important function of this page.  This function expects an array of Employee objects.
 function populateTable(arr) {
-  // Set a variable to reference the tag <header></header>  This is where we will define all of our content.
+ 
   var table = document.querySelector('header');
-  // Set for alternating colors.
-  var col = 1;
   
-  // We want a row for every employee in the list.
+  if (arr === undefined || arr.length == 0)
+  {
+    var fillMessage = document.createElement('h1');
+    fillMessage.textContent = "There are current no Employees in the Database.";
+    
+    table.appendChild(fillMessage);
+  
+  } else {
+  
+  table.className = "table table-striped";
+  
+  var tableHead = document.createElement('thead');
+  var tableHeadRow = document.createElement('tr');
+  var tableHeadID = document.createElement('th');
+  var tableHeadFirstName = document.createElement('th');
+  var tableHeadLastName = document.createElement('th');
+  var tableHeadPhoneNumber = document.createElement('th');
+  var tableHeadDepartment = document.createElement('th');
+  var tableHeadManagerID = document.createElement('th');
+  var tableHeadEditCol = document.createElement('th');
+  var tableHeadDeleteCol = document.createElement('th');
+  var tableBody = document.createElement('tbody');
+  
+  tableHeadID.className="text-center";
+  tableHeadFirstName.className="text-center";
+  tableHeadLastName.className="text-center";
+  tableHeadPhoneNumber.className="text-center";
+  tableHeadDepartment.className="text-center";
+  tableHeadManagerID.className="text-center";
+  tableHeadEditCol.className="text-center";
+  tableHeadDeleteCol.className="text-center";
+  
+  tableHeadID.textContent="Employee ID";
+  tableHeadFirstName.textContent="First Name";
+  tableHeadLastName.textContent="Last Name";
+  tableHeadPhoneNumber.textContent="Phone Number";
+  tableHeadDepartment.textContent="Department";
+  tableHeadManagerID.textContent="Manager ID";
+  tableHeadEditCol.textContent="Edit";
+  tableHeadDeleteCol.textContent="Delete";
+  
+  tableHeadRow.appendChild(tableHeadID);
+  tableHeadRow.appendChild(tableHeadFirstName);
+  tableHeadRow.appendChild(tableHeadLastName);
+  tableHeadRow.appendChild(tableHeadPhoneNumber);
+  tableHeadRow.appendChild(tableHeadDepartment);
+  tableHeadRow.appendChild(tableHeadManagerID);
+  tableHeadRow.appendChild(tableHeadEditCol);
+  tableHeadRow.appendChild(tableHeadDeleteCol);
+  
+  tableHead.appendChild(tableHeadRow);
+  
   for(i=0; i<arr.length; i++){
-    // 'bar' is the main object in the row.
-    var bar = document.createElement('div');
-    // I've split the bar into 5 seperate pieces for the different fields. b1 - b5
-    var b1 = document.createElement('div');
-    var b2 = document.createElement('div');
-    var b3 = document.createElement('div');
-    var b4 = document.createElement('div');
-    var b5 = document.createElement('div');
-    // Each piece has an associated textbox.
-    var t1 = document.createElement('p');
-    var t2 = document.createElement('p');
-    var t3 = document.createElement('p');
-    var t4 = document.createElement('p');
-    var t5 = document.createElement('p');
-    // Object used to delete each specific user.
-    var delButton = document.createElement('div');
+    var tableBodyRow = document.createElement('tr');
+    var tableBodyID = document.createElement('td');
+    var tableBodyFirstName = document.createElement('td');
+    var tableBodyLastName = document.createElement('td');
+    var tableBodyPhoneNumber = document.createElement('td');
+    var tableBodyDepartment = document.createElement('td');
+    var tableBodyManagerID = document.createElement('td');
+    var tableBodyEditCol = document.createElement('td');
+    var tableBodyEditBtn = document.createElement('button');
+    var tableBodyDelCol = document.createElement('td');
+    var tableBodyDelBtn = document.createElement('button');
 
-    // Setting attributes.  Alternating colors to make rows look distinguishable. 
-    if(col == 1){
-      bar.className = "userTableBar userTableColor1";
-      col = 2;
-    } else {
-      bar.className = "userTableBar userTableColor2";
-      col = 1;
-    }
+    tableBodyID.className="mx-auto text-center";
+    tableBodyFirstName.className="mx-auto text-center";
+    tableBodyLastName.className="mx-auto text-center";
+    tableBodyPhoneNumber.className="mx-auto text-center";
+    tableBodyDepartment.className="mx-auto text-center";
+    tableBodyManagerID.className="mx-auto text-center";
+    tableBodyEditBtn.className = "btn btn-secondary editButton";
+    tableBodyDelBtn.className = "btn btn-danger delButton";
     
-    b1.className = "contentBox";
-    b2.className = "contentBox";
-    b3.className = "contentBoxSmall";
-    b4.className = "contentBoxSmall";
-    b5.className = "contentBox";
-    t1.className = "blockText centered";
-    t2.className = "blockText";
-    t3.className = "blockText";
-    t4.className = "blockText centered";
-    t5.className = "blockText centered";
-
-    delButton.className = "delButton";
     
-    t1.textContent = arr[i].employee_id;
-    t2.textContent = arr[i].first_name+" "+arr[i].last_name;
-    t3.textContent = arr[i].phone_number;
-    t4.textContent = arr[i].department;
-    t5.textContent = arr[i].manager_id;
-    // Append each object to their correct parent object. By default children objects will have a seperate z-index value that cannot go lower than the parent.
-    b1.appendChild(t1);
-    b2.appendChild(t2);
-    b3.appendChild(t3);
-    b4.appendChild(t4);
-    b5.appendChild(t5);
+    tableBodyID.textContent = arr[i].employee_id;
+    tableBodyFirstName.textContent = arr[i].first_name;
+    tableBodyLastName.textContent = arr[i].last_name;
+    tableBodyPhoneNumber.textContent = arr[i].phone_number;
+    tableBodyDepartment.textContent = arr[i].department;
+    tableBodyManagerID.textContent = arr[i].manager_id;
+    tableBodyEditBtn.textContent = "Edit";
+    tableBodyDelBtn.textContent = "Delete";
     
-    bar.appendChild(b1);
-    bar.appendChild(b2);
-    bar.appendChild(b3);
-    bar.appendChild(b4);
-    bar.appendChild(b5);
-    bar.appendChild(delButton);
-    // Append each bar to the <header></header> tag.
-    table.appendChild(bar);
+    tableBodyEditCol.appendChild(tableBodyEditBtn);
+    tableBodyDelCol.appendChild(tableBodyDelBtn);
     
+    tableBodyRow.appendChild(tableBodyID);
+    tableBodyRow.appendChild(tableBodyFirstName);
+    tableBodyRow.appendChild(tableBodyLastName);
+    tableBodyRow.appendChild(tableBodyPhoneNumber);
+    tableBodyRow.appendChild(tableBodyDepartment);
+    tableBodyRow.appendChild(tableBodyManagerID);
+    tableBodyRow.appendChild(tableBodyEditCol);
+    tableBodyRow.appendChild(tableBodyDelCol);
+    
+    tableBody.appendChild(tableBodyRow);
+  }
+  table.appendChild(tableHead);
+  table.appendChild(tableBody);
+  
   }
 }
 
@@ -197,6 +306,29 @@ function deleteUserIcon(elem) {
   };
 }
 
+function editUserIcon(elem) {
+  for (var i = 0; i < elem.length; i++) {
+    elem[i].addEventListener("click", function(e) {
+      var current = this;
+      for (var i = 0; i < elem.length; i++) {
+        if (current != elem[i]) {
+
+        }
+        else {
+           document.getElementById('eemployeeIDForm').value = People[i].employee_id;
+           document.getElementById('efirstNameForm').value = People[i].first_name;
+           document.getElementById('elastNameForm').value = People[i].last_name;
+           document.getElementById('ephoneNumberForm').value = People[i].phone_number;
+           document.getElementById('edepartmentForm').value = People[i].department;
+           document.getElementById('emanagerIDForm').value = People[i].manager_id;
+           $("#eemployeeIDForm").attr('disabled', 'disabled');
+           $("#editModal").modal("toggle");
+        }
+      }
+      e.preventDefault();
+    });
+  };
+}
 
 
 

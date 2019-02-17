@@ -24,7 +24,19 @@
   right: 150px;
   border-radius: 200px;
   background: blue;
+  background-image: url("../images/Cloud.svg");
+  background-position: center;
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
   box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.03);
+  outline: 0;
+  border:none;
+  transition: 0.3s;
+}
+
+.uploadBtnFixed:hover{
+  cursor: pointer;
+  filter: brightness(0.8);
 }
 
 .modal-backdrop {
@@ -48,9 +60,7 @@
   width: 60px;
   top: 50%;
   left: 5%;
-  border-radius: 100%;
   transform: translateY(-50%);
-  background: grey;
 }
 
 .linkText{
@@ -116,7 +126,10 @@
   margin-top: 75px;
   margin-bottom: 150px;
   transform: translateX(-50%);
-  background: black;
+  background-image: url("../images/LogoWhite.png");
+  background-position: center;
+  background-size: 75px 75px;
+  background-repeat: no-repeat;
 }
 
 .largeBox {
@@ -150,7 +163,47 @@
   background: #bababa;
 }
 
+.editDeleteButton {
+  height: 30px;
+  width: 30px;
+  border-radius: 100px;
+}
 
+.image-binoculars {
+  background-image: url("../images/Binoculars.svg");
+  background-repeat: no-repeat;
+  background-position: center 30%;
+  background-size: 200px 200px;
+}
 
+.image-users {
+  background-image: url("../images/Person.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 65px 65px;
+}
+
+.image-delete {
+  background-image: url("../images/Trash.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45px 45px;
+  fill: black;
+}
+
+.image-edit {
+  background-image: url("../images/pencil.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25px 25px;
+  fill: black;
+}
+
+.image-alert {
+  background-image: url("../images/Caution.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 65px 65px;
+}
 
 
